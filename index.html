@@ -1,0 +1,53 @@
+<!doctype>
+<html>
+    <head>
+        <title>
+            Testing
+        </title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+        <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js">
+        </script>
+    </head>
+    <body id = "body">
+        <div id = "times"> Times </div>
+        <button onclick="get_times();" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Click</button>
+        <script>
+            function get_times(){
+                $.ajax({
+                  type: 'GET',
+                  url: 'https://api.tfl.gov.uk/Line/metropolitan/Arrivals?app_id=4b54b268&app_key=a9afefc8d29db3b61b8117d0c495b957',
+                  dataType: 'json',
+                  success: function(data){
+                      $("#times").html("");
+                      var sorted = data.sort(function(a,b){
+                                if (a.timeToStation > b.timeToStation){
+                                    return 1;
+                                }
+                                if (a.timeToStation < b.timeToStation){
+                                    return -1;
+                                }
+                                return 0;
+                      });
+                      $.each(data,function(key,value){
+                             var Station = value.stationName;
+                             var Line = value.lineName;
+                             var Platform = value.platformName;
+                             var Direction = value.direction;
+                             var DestinationName = value.destinationName;
+                             var Towards = value.towards;
+                             var Timetostation = value.timeToStation;
+                             var currentLocation = value.currentLocation;
+                             var expectedArrival = value.expectedArrival;
+                             Timetostation = parseInt(Timetostation/60);
+                             Timetostation < 1 ? Timetostation = "due" : Timetostation = Timetostation + " mins ";
+                             $("#times").append(Line+" line "+Towards+" service is approaching "+Station+" on "+Platform+" in a about "+Timetostation+"<br>");
+                             });
+                  }
+                }
+                );
+            }
+        </script>
+    </body>
+</html>
