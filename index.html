@@ -41,7 +41,6 @@
                              var currentLocation = value.currentLocation;
                              var expectedArrival = value.expectedArrival;
                              Timetostation < 1 ? Timetostation = Timetostation + "seconds" : Timetostation = parseInt(Timetostation/60) + " mins ";
-                             Timetostation = parseInt(Timetostation/60);
                              $("#times").append(Line+" line "+Towards+" service is approaching "+Station+" on "+Platform+" in a about "+Timetostation+"<br>");
                              });
                   }
